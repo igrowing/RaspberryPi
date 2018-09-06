@@ -1,3 +1,5 @@
+/boot/*
+/dev/*
 /proc/*
 /sys/*
 /tmp/*
