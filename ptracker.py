@@ -24,7 +24,7 @@ except Exception:
     sys.exit(3)
 
 # == GLOBALS ==
-VERSION = '0.3'
+VERSION = '0.4'
 people = []  # List of people to track
 # Polling interval: poll less when present and frequent when absent
 TIMEOUT_LONG = 80
@@ -105,10 +105,6 @@ def get_presence():
     return [i.presence for i in people]
 
 
-def get_macs():
-    return [i.mac for i in people]
-
-
 def get_ips():
     return [i.ip for i in people]
 
@@ -134,9 +130,9 @@ def collect_ips():
     # Regex seeks IP @ pos 0 and MAC @ pos 2.
     addrs = re.findall('(?is)((\d+\.){3}\d+).*?(([\da-fA-F]{2}:?){6})', out)
     for a, b in enumerate(people):
-        if b.mac in out and not b.ip:
+        if b.mac in out.upper() and not b.ip:
             for g in addrs:
-                if b.mac in g[2]:
+                if b.mac in g[2].upper():
                     people[a].ip = g[0]
                     people[a].presence = True  # Avoid extra ping
                     people[a].ltsip = time.time()
@@ -156,8 +152,8 @@ def main():
     print "Users expected:"
     ul = re.findall('(\S+),(\S+)', l)
     for i in ul:
-            people.append(Person(i[0], i[1]))
-            print people[-1]
+        people.append(Person(i[0], i[1].upper()))
+        print people[-1]
 
     last_presence = get_presence()
     get_net()  # Assume that network properties don't change
