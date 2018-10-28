@@ -24,7 +24,7 @@ except Exception:
     sys.exit(3)
 
 # == GLOBALS ==
-VERSION = '0.4'
+VERSION = '0.5'
 people = []  # List of people to track
 # Polling interval: poll less when present and frequent when absent
 TIMEOUT_LONG = 80
@@ -126,7 +126,12 @@ def get_net():
 def collect_ips():
     """Fill IP addresses into people list. Return if all addresses collected or not."""
 
-    out, _, _ = run_cmd('sudo nmap -sn ' + net, log_error=False)
+    out, rc, _ = run_cmd('sudo nmap -sn ' + net, log_error=False)
+    if rc:
+        print "Error: nmap is required. Run following command:"
+        print "sudo apt-get -y install nmap"
+        sys.exit(4)
+
     # Regex seeks IP @ pos 0 and MAC @ pos 2.
     addrs = re.findall('(?is)((\d+\.){3}\d+).*?(([\da-fA-F]{2}:?){6})', out)
     for a, b in enumerate(people):
@@ -151,9 +156,20 @@ def main():
 
     print "Users expected:"
     ul = re.findall('(\S+),(\S+)', l)
+    if not ul:
+        print "Error: Empty file people.csv"
+        sys.exit(8)
+
     for i in ul:
-        people.append(Person(i[0], i[1].upper()))
-        print people[-1]
+        try:
+            people.append(Person(i[0], i[1].upper()))
+            print people[-1]
+        except IndexError:
+            print "Error: Can't parse file people.csv. Check the file format: name,MAC"
+            sys.exit(6)
+        except Exception:
+            print "Error: Can't process file people.csv"
+            sys.exit(7)
 
     last_presence = get_presence()
     get_net()  # Assume that network properties don't change
