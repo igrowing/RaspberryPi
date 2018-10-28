@@ -24,7 +24,7 @@ except Exception:
     sys.exit(3)
 
 # == GLOBALS ==
-VERSION = '0.5'
+VERSION = '0.5.1'
 people = []  # List of people to track
 # Polling interval: poll less when present and frequent when absent
 TIMEOUT_LONG = 80
@@ -119,8 +119,12 @@ def get_net():
 
     global net
     out, _, _ = run_cmd("ifconfig | grep 'inet addr' | grep -v '127.0'")
-    net, _, mask = re.findall(':(\S+)', out)
-    net += '/' + str(netaddr.IPAddress(mask).netmask_bits())
+    m = re.findall(':(\S+)', out)
+    if len(m) < 3:
+        print 'Error: Network configuration is weird.'
+        sys.exit(9)
+
+    net = m[0] + '/' + str(netaddr.IPAddress(m[2]).netmask_bits())
 
 
 def collect_ips():
