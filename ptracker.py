@@ -24,7 +24,7 @@ except Exception:
     sys.exit(3)
 
 # == GLOBALS ==
-VERSION = '0.5.1'
+VERSION = '0.5.2'
 people = []  # List of people to track
 # Polling interval: poll less when present and frequent when absent
 TIMEOUT_LONG = 80
@@ -198,7 +198,7 @@ def main():
 
             last_presence = curr_presence
             # Report to shell
-            sts = [p.name + ' ' + (('a' if p.presence else 'dis') + 'ppeared') for p in people]
+            sts = [p.name + ((' ' if p.presence else ' dis') + 'appeared') for p in people]
             print 'Status change:', ', '.join(sts)
             print msg
 
