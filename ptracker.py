@@ -24,7 +24,7 @@ except Exception:
     sys.exit(3)
 
 # == GLOBALS ==
-VERSION = '0.5.2'
+VERSION = '0.5.3'
 people = []  # List of people to track
 # Polling interval: poll less when present and frequent when absent
 TIMEOUT_LONG = 80
@@ -194,7 +194,7 @@ def main():
             for i, p in enumerate(people):
                 sl.append('{"name":"%s","changed":"%s","present":"%s"}' % (p.name, p.presence != last_presence[i], p.presence))
             msg = '[%s]' % ','.join(sl)
-            publish.single("shm/rpi/presence/", msg)
+            publish.single("shm/rpi/presence", msg)
 
             last_presence = curr_presence
             # Report to shell
