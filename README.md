@@ -2,7 +2,7 @@
 
 Project details are posted in the <a href="https://github.com/igrowing/RaspberryPi/wiki">Wiki</a>.
 
-### ptracker.py
+## ptracker.py
 People/human presence detector.
 The goal of the scrip is: 
 Make reliable and cheap user presence detection with no adding hardware. 
@@ -26,3 +26,14 @@ The script sends the MQTT status and prints to the shell only on its change (whe
 Add your own logic to take actions.
 
 See [Node-Red flow as example os use](https://flows.nodered.org/flow/06f2eabb78d608153da5dccb9a2a6912).
+
+## Power monitoring
+3 SCTs + 2 ADC ADS1115 are used to digitize AC electricity consumption.
+
+- read4channels.py - reads all differential channels of 2 ADCs and prints to screen + can post to MQTT.
+- poll_power.py - is used as driver for read4channels. It aggregates power monitoring and sends/publishes averages to MQTT. Power monitoring can be invoked from /etc/rc.local, or in any other way as background service.
+
+## Removing retained MQTT messages from the broker
+During R&D process the MQTT broken becomes full of irrelevant messages. 
+
+- clean_retained_mqtt.sh - Simple script cleans the MQTT broker.
