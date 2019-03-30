@@ -1,15 +1,27 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
+import sys
 # Get ready to post MQTT status. Install the library first.
 # sudo pip install paho-mqtt
 import paho.mqtt.publish as publish
 import sensors.read4channels as read4channels
 
-os.system("logger -t poll_power 'Started power monitoring.'")
-
-while True:
+INFINITY = 999999  # :-)
+print(sys.argv)
+try:
+    times = int(sys.argv[1])
+    print('Collecting power for %s cycles' % times)
+except Exception:
+    times = INFINITY
+    print("Use Ctrl+C to stop collecting power.\n\nUse numerical argument to collect power for limited time.\nExample:\n.\poll_power.py 3\n")
     
+os.system("logger -t poll_power 'Started power monitoring.'")
+i = 0
+while i < times:
+    if times != INFINITY:
+        i += 1
+
     d = []  # Empty list of dictionaries for power reading
     measures = 75
     for c in xrange(measures):  #  Collect data for ~5 minutes
