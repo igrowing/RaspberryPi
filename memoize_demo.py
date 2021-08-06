@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import time
+import hashlib
 
 
 class Memoize:
@@ -14,7 +16,8 @@ class Memoize:
     def __call__(self, foo):
 
         def wrapper(*args, **kwargs):
-            key = foo.__name__ + str(*args) + str(**kwargs)
+            key = foo.__name__ + '.'.join([str(a) for a in args]) + repr(kwargs)
+            key = hashlib.md5(key.encode()).digest()
             # Execute the function if no recorded data found in RAM with given function arguments or if the results expired.
             if not key in self.memo or not self.ts or (self.expired != 0 and time.time() > self.ts + self.expired):
                 self.ts = time.time()
@@ -35,8 +38,8 @@ def long_sleep(secs):
 
 if __name__ == '__main__':
 
-    print(long_sleep(1), time.time())
-    print(long_sleep(1), time.time())
-    print(long_sleep(10), time.time())
-    print(long_sleep(1), time.time())
+    print(long_sleep(1), time.time())  # takes 1 seconds to run
+    print(long_sleep(1), time.time())  # takes nothing :)
+    print(long_sleep(10), time.time()) # takes 10 secs
+    print(long_sleep(1), time.time())  # takes nothing if 'expired' not set or 1 sec if 'expired' is set <11 in this case
     
