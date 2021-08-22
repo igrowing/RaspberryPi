@@ -24,8 +24,8 @@ This is variant of Nagios which:
 
 ![Node-RED UI](webui.png "Node-RED UI")
 - Normally nothing interesting happens. Checks run every hour. You can see last check date and time.
-- When specific check fails you'll get a message (I get email + pushbullet + telegram). To avoid flooding of messages there is a trigger node, limited to 1 mesage/hour. You might change the limit according to your preference. When you fixed the problem, you might want to release for a moment the limit and check the network status. Click `Acknowledge` for that.
-- For extra status report in a present moment clock `Check`.
+- When specific check fails you'll get a message (I get email + pushbullet + telegram). To avoid flooding of messages there is a trigger node, limited to 1 message/hour. You can change the limit according to your preference. When you fixed the problem, you might want to release for a moment the limit and check the network status. Click `Acknowledge` for that.
+- For extra status report in a present moment click `Check`.
 - In cases you want to exclude a device from checking, copy the `config.json` aside, and then edit  `config.json` appropriately. All this can be done live, without stopping the Node-RED.
 
 # Further steps to develop
