@@ -1,0 +1,78 @@
+{
+  "OrchidCare": {
+    "ping": {
+      "command": "ping -c 2 10.100.101.6",
+      "expected": "[12] received",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "Cannot ping"
+    },
+    "http": {
+      "command": "curl http://10.100.101.6:8001/sysinfo/",
+      "expected": "How does this work",
+      "timeout": 15,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "The Web-UI got stuck"
+    }
+  },
+  "Server": {
+    "ping": {
+      "command": "ping -c 2 10.100.101.10",
+      "expected": "[12] received",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "Cannot ping"
+    },
+    "http": {
+      "command": "curl http://10.100.101.10:8080/cgi-bin/html/login.html",
+      "expected": "hostname",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "The server does not respond"
+    }
+  },
+  "Petard": {
+    "mqtt": {
+      "command": "mosquitto_sub -t \"homie/petard/\\$state\" -v",
+      "expected": "ready",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "MQTT unreachable"
+    }
+  },
+  "Boilero": {
+    "mqtt": {
+      "command": "mosquitto_sub -t \"homie/boiler/\\$online\" -v",
+      "expected": "true",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "MQTT unreachable"
+    }
+  },
+  "Shiber": {
+    "influx": {
+      "command": "influx -execute 'SELECT sum(\"liters\") FROM \"shiber\" WHERE time >= now() - 1d' -database=shim -precision=rfc3339",
+      "expected": "shiber",
+      "timeout": 15,
+      "retries": 0,
+      "ok_msg": "OK",
+      "err_msg": "No water reports"
+    }
+  },
+  "SewagePump": {
+    "mqtt": {
+      "command": "mosquitto_sub -t \"homie/pump1/\\$online\" -v",
+      "expected": "true",
+      "timeout": 5,
+      "retries": 1,
+      "ok_msg": "OK",
+      "err_msg": "MQTT unreachable"
+    }
+  }
+}

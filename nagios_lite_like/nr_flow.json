@@ -1,0 +1,273 @@
+[
+    {
+        "id": "7b903776.23f298",
+        "type": "tableify",
+        "z": "9f3346aa.d4fc48",
+        "name": "Device status",
+        "before": "",
+        "after": "",
+        "tableStyle": "text-align:left;",
+        "theadStyle": "",
+        "tbodyStyle": "",
+        "trStyle": "border:1px dotted white;",
+        "tdStyle": "",
+        "x": 760,
+        "y": 1480,
+        "wires": [
+            [
+                "d57052f8.b9ae7"
+            ]
+        ]
+    },
+    {
+        "id": "d57052f8.b9ae7",
+        "type": "ui_template",
+        "z": "9f3346aa.d4fc48",
+        "group": "6207b1b.5ec175",
+        "name": "",
+        "order": 4,
+        "width": "6",
+        "height": "8",
+        "format": "<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 940,
+        "y": 1480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ea57c489.8594b8",
+        "type": "inject",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "topic": "Device status",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "3600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "30",
+        "x": 230,
+        "y": 1480,
+        "wires": [
+            [
+                "bba5c8ca.fc2588",
+                "f95de89c.183798"
+            ]
+        ]
+    },
+    {
+        "id": "1ddbfe46.db1332",
+        "type": "ui_button",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "group": "6207b1b.5ec175",
+        "order": 3,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "Acknowledge",
+        "tooltip": "Click when problem is fixed, restart sending alerts.",
+        "color": "",
+        "bgcolor": "",
+        "icon": "autorenew",
+        "payload": "reset",
+        "payloadType": "str",
+        "topic": "",
+        "x": 610,
+        "y": 1400,
+        "wires": [
+            [
+                "c325bc69.90d5"
+            ]
+        ]
+    },
+    {
+        "id": "c325bc69.90d5",
+        "type": "trigger",
+        "z": "9f3346aa.d4fc48",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "nul",
+        "duration": "1",
+        "extend": false,
+        "units": "hr",
+        "reset": "reset",
+        "bytopic": "topic",
+        "name": "",
+        "x": 790,
+        "y": 1440,
+        "wires": [
+            [
+                "e2ce1a10.ce2d88"
+            ]
+        ]
+    },
+    {
+        "id": "bba5c8ca.fc2588",
+        "type": "exec",
+        "z": "9f3346aa.d4fc48",
+        "command": "cd /home/pi/nagios_lite && ./nll.py",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "60",
+        "oldrc": false,
+        "name": "Nagios_lite",
+        "x": 430,
+        "y": 1480,
+        "wires": [
+            [
+                "5133da54.15f154",
+                "c11914e6.0801a8"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5133da54.15f154",
+        "type": "switch",
+        "z": "9f3346aa.d4fc48",
+        "name": "Pass errors",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "Error",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 1440,
+        "wires": [
+            [
+                "c325bc69.90d5"
+            ]
+        ]
+    },
+    {
+        "id": "e2ce1a10.ce2d88",
+        "type": "link out",
+        "z": "9f3346aa.d4fc48",
+        "name": "send_mail_pir",
+        "links": [
+            "28f28203.c20d0e"
+        ],
+        "x": 895,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "c11914e6.0801a8",
+        "type": "json",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 590,
+        "y": 1480,
+        "wires": [
+            [
+                "7b903776.23f298"
+            ]
+        ]
+    },
+    {
+        "id": "6d5f32cb.34456c",
+        "type": "comment",
+        "z": "9f3346aa.d4fc48",
+        "name": "Overall polling status",
+        "info": "",
+        "x": 390,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "1ff0837e.b6ae2d",
+        "type": "ui_button",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "group": "6207b1b.5ec175",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Check",
+        "tooltip": "Run the check now, I am nervous!",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "reset",
+        "payloadType": "str",
+        "topic": "",
+        "x": 170,
+        "y": 1420,
+        "wires": [
+            [
+                "bba5c8ca.fc2588",
+                "c325bc69.90d5"
+            ]
+        ]
+    },
+    {
+        "id": "60ec1450.ea0bbc",
+        "type": "ui_text",
+        "z": "9f3346aa.d4fc48",
+        "group": "6207b1b.5ec175",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status for:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 610,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "f95de89c.183798",
+        "type": "function",
+        "z": "9f3346aa.d4fc48",
+        "name": "timestamp",
+        "func": "var now = new Date().toLocaleString(\"ru-RU\");\nreturn {payload: now};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 1520,
+        "wires": [
+            [
+                "60ec1450.ea0bbc"
+            ]
+        ]
+    },
+    {
+        "id": "6207b1b.5ec175",
+        "type": "ui_group",
+        "z": "",
+        "name": "Status of devices",
+        "tab": "2248aa46.11d1c6",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2248aa46.11d1c6",
+        "type": "ui_tab",
+        "z": "",
+        "name": "System",
+        "icon": "settings",
+        "order": 3
+    }
+]
