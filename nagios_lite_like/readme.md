@@ -7,7 +7,7 @@ However, for a small network it's a mammoth in a crystal shop. It takes long ram
 This is variant of Nagios which:
 
 * Runs defined commands per every unit in the smart home and compares results with expected criteria.
-* Puts all the results in InfluxDB (or other DB).
+* TODO: Puts all the results in InfluxDB (or other DB).
 * In case of failure of a certain unit it sends email and/or IM (pushbullet, telegram, etc.)
 
 # Installation:
